@@ -5,15 +5,12 @@ function valContentType(
   res: express.Response,
   next: Function
 ) {
-  if (req.headers['content-type'] !== 'applicacion/json') {
-    res.status(415).write(
-      JSON.stringify({
-        message: 'JSON format needed'
-      })
-    )
+  if (req.headers['content-type'] !== 'application/json') {
+    res.send('JSON format needed')
+    res.end()
+  } else {
+    next()
   }
-
-  next()
 }
 
 export { valContentType }
