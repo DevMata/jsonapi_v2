@@ -8,8 +8,6 @@ const app = express()
 
 app.use(express.json())
 
-app.use(valContentType)
-
 app.use('/blogs', blogs)
 app.use('/blogs/[0-9]+/comments', comments)
 
