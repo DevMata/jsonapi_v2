@@ -1,5 +1,4 @@
 import express from 'express'
-import { valContentType } from './middleware/validations'
 
 import { blogs } from './routes/blogs'
 import { comments } from './routes/comments'
