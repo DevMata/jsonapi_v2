@@ -18,12 +18,17 @@
   },
   "homepage": "https://github.com/DevMata/jsonapi_v2#readme",
   "devDependencies": {
+    "@types/express": "^4.17.2",
     "@types/node": "^12.12.16",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
