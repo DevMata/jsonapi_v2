@@ -1,16 +1,13 @@
 import express from 'express'
-import { requireJson } from '../middleware/validations'
+import { requireJson, requireMongoId } from '../middleware/validations'
+import * as blogsController from '../controllers/blogs'
 
 const router = express.Router()
 router.use(express.json())
 
-router.get('/', (req, res) => {
-  res.end()
-})
+router.get('/', blogsController.getBlogs)
 
-router.get('/:blog_id', (req, res) => {
-  res.end()
-})
+router.get('/:blog_id', requireMongoId, blogsController.getBlog)
 
 router.post('/', requireJson, (req, res) => {
   res.end()
