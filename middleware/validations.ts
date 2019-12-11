@@ -1,6 +1,9 @@
 import express from 'express'
+import { Validator } from 'class-validator'
 
-function requireJson(
+const validator = new Validator()
+
+export function requireJson(
   req: express.Request,
   res: express.Response,
   next: Function
@@ -13,4 +16,14 @@ function requireJson(
   }
 }
 
-export { requireJson }
+export function requireMongoId(
+  req: express.Request,
+  res: express.Response,
+  next: Function
+) {
+  if (!validator.isMongoId(req.params!.blog_id)) {
+    res.status(400).json({ message: 'Invalid mongo Id for blog' })
+  } else {
+    next()
+  }
+}
