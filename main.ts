@@ -2,9 +2,11 @@ import express from 'express'
 
 import { blogs } from './routes/blogs'
 import { comments } from './routes/comments'
+import { connect } from './models/connection'
+
+connect()
 
 const app = express()
-
 app.use(express.json())
 
 app.use('/blogs', blogs)
