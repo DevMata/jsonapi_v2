@@ -1,4 +1,4 @@
-interface ApiResponse {
+export interface ApiResponse {
   status: number;
   response: {
     result?: object;

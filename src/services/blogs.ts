@@ -1,6 +1,7 @@
 import { Blog } from '../../models/blog';
+import { ApiResponse } from '../../controllers/api-response';
 
-export async function getBlogs(): Promise<object> {
+export async function getBlogs(): Promise<ApiResponse> {
   try {
     const blogs = await Blog.find();
 
@@ -15,7 +16,7 @@ export async function getBlogs(): Promise<object> {
   }
 }
 
-export async function getBlog(id: string): Promise<object> {
+export async function getBlog(id: string): Promise<ApiResponse> {
   try {
     const blog = await Blog.findById(id);
 

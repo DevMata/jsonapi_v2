@@ -1,15 +1,15 @@
-import express from 'express'
+import express from 'express';
 
-import { blogs } from './routes/blogs'
-import { comments } from './routes/comments'
-import { connect } from './models/connection'
+import { blogs } from './routes/blogs';
+import { comments } from './routes/comments';
+import { connect } from './models/connection';
 
-connect()
+connect();
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-app.use('/blogs', blogs)
-app.use('/blogs/[0-9]+/comments', comments)
+app.use('/blogs', blogs);
+app.use('/blogs/[0-9]+/comments', comments);
 
-app.listen(3000, () => console.log('Listenting on port 3000'))
+app.listen(3000, () => console.log('Listenting on port 3000'));
