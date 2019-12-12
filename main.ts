@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { blogs } from './routes/blogs';
-import { connect } from './models/connection';
+import { blogs } from './src/routes/blogs';
+import { connect } from './src/models/connection';
 
 connect();
 

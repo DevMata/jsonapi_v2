@@ -1,6 +1,6 @@
-import { Blog } from '../../models/blog';
+import { Blog } from '../models/blog';
 import { ApiResponse } from './api-response';
-import { Blog as BlogForm } from '../../middleware/validations';
+import { Blog as BlogForm } from '../middleware/validations';
 
 export async function getBlogs(): Promise<ApiResponse> {
   try {
