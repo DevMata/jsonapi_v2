@@ -1,4 +1,4 @@
-# BLOG JSON API
+# BLOG JSON API v.2
 
 JSON API implemented with Typescript. Allows to manage anonymous blogs and their comments.
 This version was builded with Express framework and Mongoose ODM.
