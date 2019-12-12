@@ -1,31 +1,52 @@
 import express from 'express';
-import { requireJson, validateCommentId } from '../middleware/validations';
+import { requireJson, validateCommentId, validateCommentBody } from '../middleware/validations';
+import * as CommentsService from '../src/services/comments';
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/', (req, res) => {
-  console.log('reached');
-  console.log(req.params.blog_id);
-  res.end();
-});
+router.get('/', async (req, res) => {
+  const comments = await CommentsService.getComments(req.params.blog_id);
 
-router.get('/:comment_id', validateCommentId, (req, res) => {
   res
-    .status(200)
+    .status(comments.status)
     .contentType('application/json')
-    .json(req.params);
+    .json(comments.response);
 });
 
-router.post('/', requireJson, (req, res) => {
-  res.end();
+router.get('/:comment_id', validateCommentId, async (req, res) => {
+  const comment = await CommentsService.getComment(req.params.blog_id, req.params.comment_id);
+
+  res
+    .status(comment.status)
+    .contentType('application/json')
+    .json(comment.response);
 });
 
-// router.put('/:comment_id', requireJson, (req, res) => {
-//   res.end();
-// });
+router.post('/', requireJson, validateCommentBody, async (req, res) => {
+  const createdComment = await CommentsService.postComment(req.params.blog_id, req.body);
 
-// router.delete('/:comment_id', (req, res) => {
-//   res.end();
-// });
+  res
+    .status(createdComment.status)
+    .contentType('application/json')
+    .json(createdComment.response);
+});
+
+router.put('/:comment_id', validateCommentId, requireJson, validateCommentBody, async (req, res) => {
+  const updatedComment = await CommentsService.putComment(req.params.blog_id, req.params.comment_id, req.body);
+
+  res
+    .status(updatedComment.status)
+    .contentType('application/json')
+    .json(updatedComment.response);
+});
+
+router.delete('/:comment_id', validateCommentId, async (req, res) => {
+  const deletedComment = await CommentsService.deleteComment(req.params.blog_id, req.params.comment_id);
+
+  res
+    .status(deletedComment.status)
+    .contentType('application/json')
+    .json(deletedComment.response);
+});
 
 export { router as comments };

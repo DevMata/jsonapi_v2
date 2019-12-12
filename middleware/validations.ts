@@ -21,6 +21,15 @@ export class Blog {
   }
 }
 
+export class Comment {
+  @IsString()
+  content: string;
+
+  constructor({ content }: { content: string }) {
+    this.content = content;
+  }
+}
+
 export function requireJson(req: express.Request, res: express.Response, next: Function): void {
   if (req.headers['content-type'] !== 'application/json') {
     res
@@ -56,6 +65,26 @@ export function validateCommentId(req: express.Request, res: express.Response, n
 export async function validateBlogBody(req: express.Request, res: express.Response, next: Function): Promise<void> {
   try {
     const errors = await validate(new Blog(req.body));
+
+    errors.length
+      ? res
+          .status(400)
+          .contentType('application/json')
+          .json({
+            errors
+          })
+      : next();
+  } catch (error) {
+    res
+      .status(400)
+      .contentType('application/json')
+      .json({ message: 'Cannot validate data sended' });
+  }
+}
+
+export async function validateCommentBody(req: express.Request, res: express.Response, next: Function): Promise<void> {
+  try {
+    const errors = await validate(new Comment(req.body));
 
     errors.length
       ? res
