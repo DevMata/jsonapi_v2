@@ -14,12 +14,6 @@ export class Blog {
   @IsOptional()
   tags?: string[];
 
-  // constructor(title: string, content: string, tags?: string[]) {
-  //   this.title = title;
-  //   this.content = content;
-  //   this.tags = tags;
-  // }
-
   constructor({ title, content, tags }: { title: string; content: string; tags?: string[] }) {
     this.title = title;
     this.content = content;
@@ -39,11 +33,21 @@ export function requireJson(req: express.Request, res: express.Response, next: F
   }
 }
 
-export function requireMongoId(req: express.Request, res: express.Response, next: Function): void {
+export function validateBlogId(req: express.Request, res: express.Response, next: Function): void {
   const params = req.params;
 
   if (!validator.isMongoId(params['blog_id'])) {
     res.status(400).json({ message: 'Invalid mongo Id for blog' });
+  } else {
+    next();
+  }
+}
+
+export function validateCommentId(req: express.Request, res: express.Response, next: Function): void {
+  const params = req.params;
+
+  if (!validator.isMongoId(params['comment_id'])) {
+    res.status(400).json({ message: 'Invalid mongo Id for comment' });
   } else {
     next();
   }
