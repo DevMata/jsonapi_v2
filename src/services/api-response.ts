@@ -1,8 +1,10 @@
+import mongoose from 'mongoose';
+
 export interface ApiResponse {
   status: number;
   response: {
-    result?: object;
-    errors?: string[];
+    result?: mongoose.Document | mongoose.Document[];
+    errors?: object[];
     message?: string;
   };
 }
