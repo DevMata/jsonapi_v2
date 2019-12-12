@@ -1,13 +1,15 @@
 import express from 'express';
-import { Validator, validate, IsString, IsArray, IsOptional } from 'class-validator';
+import { Validator, validate, IsString, IsArray, IsOptional, MinLength } from 'class-validator';
 
 const validator = new Validator();
 
 export class Blog {
   @IsString()
+  @MinLength(1)
   title: string;
 
   @IsString()
+  @MinLength(1)
   content: string;
 
   @IsArray({ each: true })
@@ -23,6 +25,7 @@ export class Blog {
 
 export class Comment {
   @IsString()
+  @MinLength(1)
   content: string;
 
   constructor({ content }: { content: string }) {
