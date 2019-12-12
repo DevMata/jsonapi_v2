@@ -57,16 +57,39 @@ export async function deleteBlog(id: string): Promise<ApiResponse> {
 
 export async function postBlog(blog: BlogForm): Promise<ApiResponse> {
   try {
-    const newBlog = new Blog(blog);
-    const createdBlog = await newBlog.save();
+    const createdBlog = await new Blog(blog).save();
+    const res = await Blog.findById(createdBlog._id).select('_id title content createdAt modifiedAt');
+
+    if (!res) throw 'No created blog';
 
     return {
       status: 201,
       response: {
-        result: createdBlog
+        result: res
       }
     };
   } catch (error) {
     return { status: 421, response: { message: 'Cannot post blog' } };
+  }
+}
+
+export async function putBlog(id: string, blog: BlogForm): Promise<ApiResponse> {
+  try {
+    const existingBlog = await getBlog(id);
+    if (existingBlog.status !== 200) {
+      return existingBlog;
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { $set: { title: blog.title, content: blog.content, modifiedAt: Date.now() } },
+      { new: true }
+    ).select('_id title content createdAt modifiedAt');
+
+    if (!updatedBlog) throw 'No updated blog';
+
+    return { status: 200, response: { result: updatedBlog } };
+  } catch (error) {
+    return { status: 421, response: { message: 'Cannot put blog' } };
   }
 }
