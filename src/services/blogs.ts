@@ -1,31 +1,31 @@
-import { Blog } from '../../models/blog'
+import { Blog } from '../../models/blog';
 
-async function getBlogs() {
+export async function getBlogs(): Promise<object> {
   try {
-    const blogs = await Blog.find()
+    const blogs = await Blog.find();
 
     return blogs.length
-      ? { status: 200, result: blogs }
-      : { status: 404, message: 'There are not blogs' }
+      ? { status: 200, response: { result: blogs } }
+      : { status: 404, response: { message: 'There are not blogs' } };
   } catch (error) {
     return {
       status: 421,
-      message: 'Cannot get blogs from database'
-    }
+      response: { message: 'Cannot get blogs from database' }
+    };
   }
 }
 
-async function getBlog(id: string) {
+export async function getBlog(id: string): Promise<object> {
   try {
-    const blog = await Blog.findById(id)
+    const blog = await Blog.findById(id);
 
     return blog
-      ? { status: 200, result: blog }
-      : { status: 404, message: 'Blog not found' }
+      ? { status: 200, response: { result: blog } }
+      : { status: 404, response: { message: 'Blog not found' } };
   } catch (error) {
     return {
       status: 421,
-      message: 'Cannot search the blog'
-    }
+      response: { message: 'Cannot search the blog' }
+    };
   }
 }
