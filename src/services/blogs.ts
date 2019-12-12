@@ -1,6 +1,7 @@
 import { Blog } from '../models/blog';
 import { ApiResponse } from './api-response';
 import { Blog as BlogForm } from '../middleware/validations';
+import { Comment } from '../models/comment';
 
 export async function getBlogs(): Promise<ApiResponse> {
   try {
@@ -42,7 +43,13 @@ export async function deleteBlog(id: string): Promise<ApiResponse> {
       return blog;
     }
 
+    const comments = await Blog.findById(id).select('comments');
+    if (!comments) throw 'No comments';
+
+    const commentsIds = comments.get('comments') as string[];
+
     await Blog.findByIdAndDelete(id);
+    await Comment.deleteMany({ _id: { $in: commentsIds } });
 
     return {
       status: 204,
