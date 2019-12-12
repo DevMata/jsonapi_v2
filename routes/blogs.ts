@@ -1,13 +1,13 @@
 import express from 'express';
 import { requireJson, validateBlogId, validateBlogBody } from '../middleware/validations';
-import * as blogsService from '../src/services/blogs';
+import * as BlogsService from '../src/services/blogs';
 import { comments } from './comments';
 
 const router = express.Router();
 router.use(express.json());
 
 router.get('/', async (req: express.Request, res: express.Response) => {
-  const blogs = await blogsService.getBlogs();
+  const blogs = await BlogsService.getBlogs();
 
   res
     .status(blogs.status)
@@ -16,7 +16,7 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 });
 
 router.get('/:blog_id', validateBlogId, async (req: express.Request, res: express.Response) => {
-  const blog = await blogsService.getBlog(req.params.blog_id);
+  const blog = await BlogsService.getBlog(req.params.blog_id);
 
   res
     .status(blog.status)
@@ -25,7 +25,7 @@ router.get('/:blog_id', validateBlogId, async (req: express.Request, res: expres
 });
 
 router.post('/', requireJson, validateBlogBody, async (req: express.Request, res: express.Response) => {
-  const blog = await blogsService.postBlog(req.body);
+  const blog = await BlogsService.postBlog(req.body);
 
   res
     .status(blog.status)
@@ -39,7 +39,7 @@ router.put(
   requireJson,
   validateBlogBody,
   async (req: express.Request, res: express.Response) => {
-    const blog = await blogsService.putBlog(req.params.blog_id, req.body);
+    const blog = await BlogsService.putBlog(req.params.blog_id, req.body);
 
     res
       .status(blog.status)
@@ -49,7 +49,7 @@ router.put(
 );
 
 router.delete('/:blog_id', validateBlogId, async (req: express.Request, res: express.Response) => {
-  const blog = await blogsService.deleteBlog(req.params.blog_id);
+  const blog = await BlogsService.deleteBlog(req.params.blog_id);
 
   res
     .status(blog.status)
