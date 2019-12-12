@@ -1,6 +1,7 @@
 import express from 'express';
-import { requireJson, requireMongoId, validateBlogBody } from '../middleware/validations';
+import { requireJson, validateBlogId, validateBlogBody } from '../middleware/validations';
 import * as blogsService from '../src/services/blogs';
+import { comments } from './comments';
 
 const router = express.Router();
 router.use(express.json());
@@ -14,7 +15,7 @@ router.get('/', async (req: express.Request, res: express.Response) => {
     .json(blogs.response);
 });
 
-router.get('/:blog_id', requireMongoId, async (req: express.Request, res: express.Response) => {
+router.get('/:blog_id', validateBlogId, async (req: express.Request, res: express.Response) => {
   const blog = await blogsService.getBlog(req.params.blog_id);
 
   res
@@ -32,11 +33,22 @@ router.post('/', requireJson, validateBlogBody, async (req: express.Request, res
     .json(blog.response);
 });
 
-router.put('/:blog_id', requireMongoId, requireJson, async (req: express.Request, res: express.Response) => {
-  res.end();
-});
+router.put(
+  '/:blog_id',
+  validateBlogId,
+  requireJson,
+  validateBlogBody,
+  async (req: express.Request, res: express.Response) => {
+    const blog = await blogsService.putBlog(req.params.blog_id, req.body);
 
-router.delete('/:blog_id', requireMongoId, async (req: express.Request, res: express.Response) => {
+    res
+      .status(blog.status)
+      .contentType('application/json')
+      .json(blog.response);
+  }
+);
+
+router.delete('/:blog_id', validateBlogId, async (req: express.Request, res: express.Response) => {
   const blog = await blogsService.deleteBlog(req.params.blog_id);
 
   res
@@ -44,5 +56,7 @@ router.delete('/:blog_id', requireMongoId, async (req: express.Request, res: exp
     .contentType('application/json')
     .json(blog.response);
 });
+
+router.use('/:blog_id/comments', validateBlogId, comments);
 
 export { router as blogs };
