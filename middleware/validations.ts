@@ -1,22 +1,26 @@
 import express from 'express';
-import { Validator, ValidationError, IsString, IsArray, IsOptional, MinLength } from 'class-validator';
+import { Validator, validate, IsString, IsArray, IsOptional } from 'class-validator';
 
 const validator = new Validator();
 
-class Blog {
+export class Blog {
   @IsString()
-  @MinLength(1)
   title: string;
 
   @IsString()
-  @MinLength(1)
   content: string;
 
-  @IsArray()
+  @IsArray({ each: true })
   @IsOptional()
-  tags: string[];
+  tags?: string[];
 
-  constructor(title: string, content: string, tags: string[]) {
+  // constructor(title: string, content: string, tags?: string[]) {
+  //   this.title = title;
+  //   this.content = content;
+  //   this.tags = tags;
+  // }
+
+  constructor({ title, content, tags }: { title: string; content: string; tags?: string[] }) {
     this.title = title;
     this.content = content;
     this.tags = tags;
@@ -36,7 +40,9 @@ export function requireJson(req: express.Request, res: express.Response, next: F
 }
 
 export function requireMongoId(req: express.Request, res: express.Response, next: Function): void {
-  if (!validator.isMongoId(req.params!.blog_id)) {
+  const params = req.params;
+
+  if (!validator.isMongoId(params['blog_id'])) {
     res.status(400).json({ message: 'Invalid mongo Id for blog' });
   } else {
     next();
@@ -45,15 +51,20 @@ export function requireMongoId(req: express.Request, res: express.Response, next
 
 export async function validateBlogBody(req: express.Request, res: express.Response, next: Function): Promise<void> {
   try {
-    console.log(req.body);
-    await validator.validateOrReject(req.body as Blog);
-    next();
-  } catch (validation) {
-    const validations: ValidationError[] = validation;
+    const errors = await validate(new Blog(req.body));
 
+    errors.length
+      ? res
+          .status(400)
+          .contentType('application/json')
+          .json({
+            errors
+          })
+      : next();
+  } catch (error) {
     res
       .status(400)
       .contentType('application/json')
-      .json(validations.map(val => val.property + val.constraints));
+      .json({ message: 'Cannot validate data sended' });
   }
 }
