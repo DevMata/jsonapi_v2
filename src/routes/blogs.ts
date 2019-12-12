@@ -2,6 +2,7 @@ import express from 'express';
 import { requireJson, validateBlogId, validateBlogBody } from '../middleware/validations';
 import * as BlogsService from '../services/blogs';
 import { comments } from './comments';
+import { tags } from './tags';
 
 const router = express.Router();
 router.use(express.json());
@@ -58,5 +59,6 @@ router.delete('/:blog_id', validateBlogId, async (req: express.Request, res: exp
 });
 
 router.use('/:blog_id/comments', validateBlogId, comments);
+router.use('/:blog_id/tags', validateBlogBody, tags);
 
 export { router as blogs };
