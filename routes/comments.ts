@@ -1,26 +1,26 @@
-import express from 'express'
-import { requireJson } from '../middleware/validations'
+import express from 'express';
+import { requireJson } from '../middleware/validations';
 
-const router = express.Router()
+const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.end()
-})
+  res.end();
+});
 
 router.get('/:comment_id', (req, res) => {
-  res.end()
-})
+  res.end();
+});
 
 router.post('/', requireJson, (req, res) => {
-  res.end()
-})
+  res.end();
+});
 
 router.put('/:comment_id', requireJson, (req, res) => {
-  res.end()
-})
+  res.end();
+});
 
 router.delete('/:comment_id', (req, res) => {
-  res.end()
-})
+  res.end();
+});
 
-export { router as comments }
+export { router as comments };
