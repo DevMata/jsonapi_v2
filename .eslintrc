@@ -1,8 +1,13 @@
 {
+  "parser": "@typescript-eslint/parse",
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "extends": ["plugin:prettier/recommended"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
 
   "plugins": ["prettier"],
 
