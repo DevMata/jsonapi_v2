@@ -2,6 +2,7 @@ import express from 'express';
 import { requireJson, validateBlogId, validateBlogBody } from '../middleware/validations';
 import * as BlogsService from '../services/blogs';
 import { comments } from './comments';
+import { validateTagId } from '../middleware/tags';
 
 const router = express.Router();
 router.use(express.json());
@@ -56,6 +57,43 @@ router.delete('/:blog_id', validateBlogId, async (req: express.Request, res: exp
     .contentType('application/json')
     .json(blog.response);
 });
+
+router.get('/:blog_id/tags', validateBlogId, async (req: express.Request, res: express.Response) => {
+  const tags = await BlogsService.getTagsBlog(req.params.blog_id);
+
+  res
+    .status(tags.status)
+    .contentType('application/json')
+    .json(tags.response);
+});
+
+router.put(
+  '/:blog_id/tags/:tag_id',
+  validateBlogId,
+  validateTagId,
+  async (req: express.Request, res: express.Response) => {
+    const addedTag = await BlogsService.addTagToBlog(req.params.blog_id, req.params.tag_id);
+
+    res
+      .status(addedTag.status)
+      .contentType('application/json')
+      .json(addedTag.response);
+  }
+);
+
+router.delete(
+  '/:blog_id/tags/:tag_id',
+  validateBlogId,
+  validateTagId,
+  async (req: express.Request, res: express.Response) => {
+    const removedTag = await BlogsService.removeTagFromBlog(req.params.blog_id, req.params.tag_id);
+
+    res
+      .status(removedTag.status)
+      .contentType('application/json')
+      .json(removedTag.response);
+  }
+);
 
 router.use('/:blog_id/comments', validateBlogId, comments);
 
