@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc && npx prettier ./**/*.js --write && echo Compiled",
+    "compile": "tsc && npx prettier ./src/**/*.js --write && echo Compiled",
     "watch": "nodemon --watch '**/*.ts' --exec 'ts-node' main.ts",
     "start": "node main.js",
     "up": "npm run compile && npm run start"

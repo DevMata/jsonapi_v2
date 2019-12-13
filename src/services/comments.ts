@@ -1,8 +1,8 @@
-import { Blog } from '../../models/blog';
+import { Blog } from '../models/blog';
 import { ApiResponse } from '../services/api-response';
 import * as BlogsService from '../services/blogs';
-import { Comment } from '../../models/comment';
-import { Comment as CommentForm } from '../../middleware/validations';
+import { Comment } from '../models/comment';
+import { Comment as CommentForm } from '../middleware/validations';
 
 export async function getComments(blogId: string): Promise<ApiResponse> {
   try {

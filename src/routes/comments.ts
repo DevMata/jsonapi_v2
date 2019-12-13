@@ -1,6 +1,6 @@
 import express from 'express';
 import { requireJson, validateCommentId, validateCommentBody } from '../middleware/validations';
-import * as CommentsService from '../src/services/comments';
+import * as CommentsService from '../services/comments';
 
 const router = express.Router({ mergeParams: true });
 

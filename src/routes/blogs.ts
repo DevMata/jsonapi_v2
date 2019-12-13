@@ -1,6 +1,6 @@
 import express from 'express';
 import { requireJson, validateBlogId, validateBlogBody } from '../middleware/validations';
-import * as BlogsService from '../src/services/blogs';
+import * as BlogsService from '../services/blogs';
 import { comments } from './comments';
 
 const router = express.Router();
